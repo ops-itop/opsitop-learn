@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension format="1.0">
+	<extension_code>opsitop-learn</extension_code>
+	<company>ops-itop</company>
+	<author><![CDATA[annProg]]></author>
+	<label><![CDATA[Learn iTop Extension]]></label>
+	<description><![CDATA[This is an iTop extension for learning purposes]]></description>
+	<version>2.6.1</version>
+	<release_date>2020-05-08</release_date>
+	<version_description><![CDATA[]]></version_description>
+	<itop_version_min>2.7.0</itop_version_min>
+	<status>develop</status>
+	<mandatory>false</mandatory>
+	<more_info_url>https://github.com/ops-itop/opsitop-learn</more_info_url>
+</extension>
