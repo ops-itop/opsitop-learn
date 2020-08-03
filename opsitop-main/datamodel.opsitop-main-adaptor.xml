@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<itop_design xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	version="1.0">
+	<classes>
+		<class id="OpsLearn"
+			_delta="define">
+			<parent>cmdbAbstractObject</parent>
+			<properties>
+				<category>bizmodel,searchable</category>
+				<abstract>false</abstract>
+				<key_type>autoincrement</key_type>
+				<db_table>opslearn</db_table>
+				<db_key_field>id</db_key_field>
+				<db_final_class_field/>
+				<naming>
+					<attributes>
+						<attribute id="ip_id"/>
+					</attributes>
+				</naming>
+				<display_template/>
+				<reconciliation>
+					<attributes>
+						<attribute id="ip_id"></attribute>
+					</attributes>
+				</reconciliation>
+			</properties>
+
+			<fields>
+				<!-- 测试直接使用 IPObject，使一个对象能链接到 IPAddress，Subnet，IP Range, Subnet Block 所有对象 -->
+				<field id="ip_id"
+					xsi:type="AttributeExternalKey"
+					_delta="define">
+					<filter>SELECT IPObject WHERE finalclass IN ('IPv4Address', 'IPv4Range', 'IPv4Subnet')</filter>
+					<sql>ip_id</sql>
+					<is_null_allowed>true</is_null_allowed>
+					<target_class>IPObject</target_class>
+					<on_target_delete>DEL_MANUAL</on_target_delete>
+				</field>
+				<field id="ip_name"
+					xsi:type="AttributeExternalField"
+					_delta="define">
+					<extkey_attcode>ip_id</extkey_attcode>
+					<target_attcode>friendlyname</target_attcode>
+				</field>
+			</fields>
+			<methods />
+			<presentation>
+				<default_search _delta="must_exist">
+					<items>
+						<item id="ip_id"
+							_delta="define">
+							<rank>20</rank>
+						</item>
+					</items>
+				</default_search>
+				<details>
+					<items>
+						<item id="ip_id">
+							<rank>10</rank>
+						</item>
+					</items>
+				</details>
+				<search>
+					<items>
+						<item id="ip_id">
+							<rank>10</rank>
+						</item>
+					</items>
+				</search>
+				<list>
+					<items>
+						<item id="ip_id">
+							<rank>10</rank>
+						</item>
+					</items>
+				</list>
+			</presentation>
+		</class>
+	</classes>
+	<menus>
+		<menu id="OpsLearn"
+			xsi:type="OQLMenuNode"
+			_delta="define">
+			<rank>7</rank>
+			<parent>SearchCIs</parent>
+			<oql>SELECT OpsLearn</oql>
+			<do_search>1</do_search>
+		</menu>
+	</menus>
+	<snippets>
+	</snippets>
+</itop_design>
+
+
