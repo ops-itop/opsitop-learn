@@ -26,6 +26,7 @@ SetupWebPage::AddModule(
 		//
 		'datamodel' => array(
 			'model.opsitop-main.php',
+			'main.opsitop-main.php',
 		),
 		'data.struct' => array(
 		),

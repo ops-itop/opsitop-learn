@@ -42,6 +42,11 @@
 					<extkey_attcode>ip_id</extkey_attcode>
 					<target_attcode>friendlyname</target_attcode>
 				</field>
+				<field id="jira" xsi:type="AttributeJira" _delta="define">
+					<sql>jira</sql>
+					<default_value>http://a.com/</default_value>
+					<is_null_allowed>true</is_null_allowed>
+				</field>
 			</fields>
 			<methods />
 			<presentation>
@@ -51,12 +56,18 @@
 							_delta="define">
 							<rank>20</rank>
 						</item>
+						<item id="jira">
+							<rank>30</rank>
+						</item>
 					</items>
 				</default_search>
 				<details>
 					<items>
 						<item id="ip_id">
 							<rank>10</rank>
+						</item>
+						<item id="jira">
+							<rank>30</rank>
 						</item>
 					</items>
 				</details>
@@ -65,12 +76,18 @@
 						<item id="ip_id">
 							<rank>10</rank>
 						</item>
+						<item id="jira">
+							<rank>30</rank>
+						</item>
 					</items>
 				</search>
 				<list>
 					<items>
 						<item id="ip_id">
 							<rank>10</rank>
+						</item>
+						<item id="jira">
+							<rank>30</rank>
 						</item>
 					</items>
 				</list>
