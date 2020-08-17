@@ -24,6 +24,7 @@ SetupWebPage::AddModule(
 		//
 		'datamodel' => array(
             'model.custom-dashlets.php',
+			'iframedashlet.class.inc.php',
 		),
 		'webservice' => array(
 
