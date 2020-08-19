@@ -93,6 +93,25 @@
 				</list>
 			</presentation>
 		</class>
+		<class id="Server">
+			<presentation>
+				<details>
+					<items>
+						<item id="col:col1">
+							<rank>120</rank>
+							<items>
+								<item id="fieldset:Server:moreinfo">
+									<rank>20</rank>
+									<items>
+										<item id="managementip_id" _delta="delete"/>
+									</items>
+								</item>
+							</items>
+						</item>
+					</items>
+				</details>
+			</presentation>
+		</class>
 	</classes>
 	<menus>
 		<menu id="OpsLearn"
