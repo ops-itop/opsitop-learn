@@ -49,7 +49,7 @@ class DashletIFrame extends Dashlet
 	{
 		return array(
 				'label' => Dict::S('UI:DashletIframe:Label'),
-				'icon' => 'env-'.utils::GetCurrentEnvironment().'/itop-iframe-dashlet/images/iframe.png',
+				'icon' => 'env-'.utils::GetCurrentEnvironment().'/custom-dashlets/images/iframe.png',
 				'description' => Dict::S('UI:DashletIframe:Description'),
 		);
 	}
