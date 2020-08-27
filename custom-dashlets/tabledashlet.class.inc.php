@@ -24,31 +24,58 @@ class CustomDashletTable {
 
 class DashletTable extends Dashlet
 {
+	private $aEnumAttrs;
+
 	public function __construct($oModelReflection, $sId)
 	{
 		parent::__construct($oModelReflection, $sId);
 		$this->aProperties['oql'] = 'SELECT Server';
+		$this->aProperties['class'] = 'Server';
 		$this->aProperties['axisx'] = 'brand_name';
 		$this->aProperties['axisy'] = 'location_name';
 		$this->aCSSClasses[] = 'dashlet-block';
-		
+		$aEnumAttrs = array();
+	}
+
+	public function GetEnumAttr() {
+		$aAttrDefs = MetaModel::ListAttributeDefs($this->aProperties['class']);
+		foreach ($aAttrDefs as $attr => $def) {
+			if (get_class($def) == "AttributeEnum") {
+				$this->aEnumAttrs[] = $attr;
+			}
+		}
+	}
+
+	public function GetAttrTranslation($attr, $val) {
+		if($val == "未定义") return $val;
+		$sOriginClass = MetaModel::GetAttributeOrigin($this->aProperties['class'], $attr);
+		if(in_array($attr, $this->aEnumAttrs)) {
+			return Dict::S("Class:" . $sOriginClass . "/Attribute:" . $attr . "/Value:" . $val);
+		} else {
+			return $val;
+		}
 	}
 
 	public function Render($oPage, $bEditMode = false, $aExtraParams = array())
 	{
 		$sOql = $this->aProperties['oql'];
+		$sClass = $this->aProperties['class'];
 		$sAxisx = $this->aProperties['axisx'];
 		$sAxisy = $this->aProperties['axisy'];
 
+		$this->GetEnumAttr();
+
 		$iTopApi = new iTopClient();
-		$sData = $iTopApi->coreGet('Server', $sOql, "$sAxisx,$sAxisy");
+		$sData = $iTopApi->coreGet($sClass, $sOql, "$sAxisx,$sAxisy");
+
 		$aData = json_decode($sData, true);
 
-		$iCount = $aData['Found'];
+		//$iCount = $aData['Found'];
 		$aXCount = array();
 		foreach($aData['objects'] as $k => $val) {
 			$x = $val['fields'][$sAxisx];
-			if($x == "") $x = "empty";
+			if($x == "") $x = "未定义";
+			$x = $this->GetAttrTranslation($sAxisx, $x);
 			array_push($aXCount, $x);
 		}
 
@@ -57,8 +84,11 @@ class DashletTable extends Dashlet
 		foreach($aData['objects'] as $k => $val) {
 			$y = $val['fields'][$sAxisy];
 			$x = $val['fields'][$sAxisx];
-			if($y == "") $y = "empty";
-			if($x == "") $x = "empty";
+			if($y == "") $y = "未定义";
+			if($x == "") $x = "未定义";
+
+			$y = $this->GetAttrTranslation($sAxisy, $y);
+			$x = $this->GetAttrTranslation($sAxisx, $x);
 			if(!array_key_exists($y, $aStatis)) {
 				$aStatis[$y] = array();
 			}
@@ -68,6 +98,7 @@ class DashletTable extends Dashlet
 			$aStatis[$y][$x]++;
 		}
 
+		// 数组需要按键名排序，否则生成的表格有误
 		foreach($aStatis as $k => $val) {
 			$aKeys = array_keys($val);
 			$aDiff = array_diff($aXCount, $aKeys);
@@ -76,7 +107,10 @@ class DashletTable extends Dashlet
 					$aStatis[$k][$v] = 0;
 				}
 			}
+			ksort($aStatis[$k]);
 		}
+
+		ksort($aStatis);
 		
 		$oTable = new CustomDashletTable();
 		$sTable = $oTable->array2table($aStatis);
@@ -93,12 +127,16 @@ class DashletTable extends Dashlet
 		$oField = new DesignerLongTextField('oql', Dict::S('UI:DashletTable:Prop-OQL'), $this->aProperties['oql']);
 		$oField->SetMandatory();
 		$oForm->AddField($oField);
-		
-		$oField = new DesignerIntegerField('axisx', Dict::S('UI:DashletTable:Prop-Axis-X'), $this->aProperties['axisx']);
+
+		$oField = new DesignerTextField('class', Dict::S('UI:DashletTable:Prop-Class'), $this->aProperties['class']);
 		$oField->SetMandatory();
 		$oForm->AddField($oField);
 		
-		$oField = new DesignerIntegerField('axisy', Dict::S('UI:DashletTable:Prop-Height'), $this->aProperties['axisy']);
+		$oField = new DesignerTextField('axisx', Dict::S('UI:DashletTable:Prop-Axis-X'), $this->aProperties['axisx']);
+		$oField->SetMandatory();
+		$oForm->AddField($oField);
+		
+		$oField = new DesignerTextField('axisy', Dict::S('UI:DashletTable:Prop-Axis-Y'), $this->aProperties['axisy']);
 		$oField->SetMandatory();
 		$oForm->AddField($oField);
 	}
