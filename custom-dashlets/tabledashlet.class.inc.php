@@ -34,7 +34,7 @@ class DashletTable extends Dashlet
 		$this->aProperties['axisx'] = 'brand_name';
 		$this->aProperties['axisy'] = 'location_name';
 		$this->aCSSClasses[] = 'dashlet-block';
-		$aEnumAttrs = array();
+		$this->aEnumAttrs = array();
 	}
 
 	public function GetEnumAttr() {
