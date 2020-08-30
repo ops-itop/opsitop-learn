@@ -14,20 +14,22 @@ class TableBlockAsync {
 	private $sOql;
 	private $sAxisx;
 	private $sAxisy;
+	private $sId;
 
-	public function __construct($sClass = 'Server', $sOql = 'SELECT Server', $sAxisx = 'brand_name', $sAxisy = 'location_name')
+	public function __construct($sClass = 'Server', $sOql = 'SELECT Server', $sAxisx = 'brand_name', $sAxisy = 'location_name', $sId = 'tabledashlet_ajax')
 	{
 		$this->sClass = $sClass;
 		$this->sOql = $sOql;
 		$this->sAxisx = $sAxisx;
 		$this->sAxisy = $sAxisy;
+		$this->sId = $sId;
 		
 		$this->GetEnumAttr();
 	}
 
 	public function Array2Table($array, $title="", $highlight="")
 	{
-		$table = "<table class=\"listResults\">";
+		$table = "<table id=\"" . $this->sId . "\" class=\"listResults\">";
 		$caption = "<caption>$title</caption>";
 		$thead = "<thead><tr><th></th><th>";
 		$tr = "<tr>";
@@ -133,6 +135,7 @@ $sClass = utils::ReadParam('class', 'Server');
 $sOql = utils::ReadParam('oql', 'SELECT Server');
 $sAxisx = utils::ReadParam('axisx', 'brand_name');
 $sAxisy = utils::ReadParam('axisy', 'location_name');
+$sId = utils::ReadParam('id', 'tabledashlet_ajax');
 
-$oTableDashlet = new TableBlockAsync($sClass, $sOql, $sAxisx, $sAxisy);
+$oTableDashlet = new TableBlockAsync($sClass, $sOql, $sAxisx, $sAxisy, $sId);
 $oTableDashlet->Render();

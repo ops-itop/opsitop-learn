@@ -15,12 +15,14 @@ class DashletTable extends Dashlet
 
 	public function Render($oPage, $bEditMode = false, $aExtraParams = array())
 	{
+		$sId = utils::GetSafeId('dashlet_table_'.($bEditMode? 'edit_' : '').$this->sId);
 		$sHtml = "";
 		$aParams = array(
 			'class' => $this->aProperties['class'],
 			'oql' => $this->aProperties['oql'],
 			'axisx' => $this->aProperties['axisx'],
-			'axisy' => $this->aProperties['axisy']
+			'axisy' => $this->aProperties['axisy'],
+			'id' => "table-" . $sId,
 		);
 		
 		$sParam = http_build_query($aParams);
@@ -29,7 +31,6 @@ class DashletTable extends Dashlet
 		$sUrl = rtrim(MetaModel::GetConfig()->Get('app_root_url'), "/") . "/" . $sRender;
 
  
-		$sId = utils::GetSafeId('dashlet_table_'.($bEditMode? 'edit_' : '').$this->sId);
 
 		$sHtml .= "<div id=\"$sId\" class=\"dashlet-content loading\">\n";
 		$sHtml .= $oPage->GetP("<img src=\"../images/indicator_arrows.gif\"> ".Dict::S('UI:Loading'));
@@ -50,6 +51,7 @@ class DashletTable extends Dashlet
 				    .append(data)
 				    .removeClass("loading")
                  ;
+				$("#table-' . $sId . '").tablesorter({ widgets:["zebra"] });
 				}
 			 );
 		');
