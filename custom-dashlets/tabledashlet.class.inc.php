@@ -29,12 +29,10 @@ class DashletTable extends Dashlet
 		$sUrl = rtrim(MetaModel::GetConfig()->Get('app_root_url'), "/") . "/" . $sRender;
 
  
-		$oPage->add('<div class="dashlet-content">');
 		$sId = utils::GetSafeId('dashlet_table_'.($bEditMode? 'edit_' : '').$this->sId);
 
-		$sHtml .= "<div id=\"$sId\" class=\"display_block loading\">\n";
+		$sHtml .= "<div id=\"$sId\" class=\"dashlet-content loading\">\n";
 		$sHtml .= $oPage->GetP("<img src=\"../images/indicator_arrows.gif\"> ".Dict::S('UI:Loading'));
-		$sHtml .= "</div>\n";
 
 		$oPage->add($sHtml);
 
