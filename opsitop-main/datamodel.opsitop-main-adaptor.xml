@@ -56,14 +56,14 @@
 					<code><![CDATA[
 						public function DisplayModifyForm(WebPage $oPage, $aExtraParams = array())
 						{
-							$oPage->add_ready_script("var qoq_cycle = $('[id$=_qoq_cycle]');".
-								"function qoq_cycleDisplay() {".
-								"var alert_method = $('[name=attr_method]').val();".
-								"qoq_cycle.hide();".
-								"if(alert_method == 'qoq_fall' || alert_method == 'qoq_rise') ".
-								"qoq_cycle.show();}".
-								"qoq_cycleDisplay();".
-								"$('[name=attr_method]').bind('change', qoq_cycleDisplay);");
+							$oPage->add_ready_script('
+							function AutoSetIpId() {
+								var ip = $("[name=attr_ip_id option:selected]").text();
+								console.log(ip);
+								$("[name=attr_jira]").val("http://a.com/" + ip);
+							}
+							$("[name=attr_ip_id]").bind("change", AutoSetIpId);
+							');
 							parent::DisplayModifyForm($oPage, $aExtraParams);
 						}
 					]]>
