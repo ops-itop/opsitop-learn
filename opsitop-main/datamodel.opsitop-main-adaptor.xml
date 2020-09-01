@@ -58,7 +58,7 @@
 						{
 							$oPage->add_ready_script('
 							function AutoSetIpId() {
-								var ip = $("[name=attr_ip_id option:selected]").text();
+								var ip = $("[name=attr_ip_id] option:selected").text();
 								console.log(ip);
 								$("[name=attr_jira]").val("http://a.com/" + ip);
 							}
