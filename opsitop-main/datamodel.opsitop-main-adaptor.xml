@@ -26,15 +26,27 @@
 			</properties>
 
 			<fields>
+				<field id="org_id"
+					xsi:type="AttributeExternalKey"
+					_delta="define">
+					<sql>org_id</sql>
+					<is_null_allowed>true</is_null_allowed>
+					<target_class>Organization</target_class>
+					<on_target_delete>DEL_MANUAL</on_target_delete>
+				</field>
+
 				<!-- 测试直接使用 IPObject，使一个对象能链接到 IPAddress，Subnet，IP Range, Subnet Block 所有对象 -->
 				<field id="ip_id"
 					xsi:type="AttributeExternalKey"
 					_delta="define">
-					<filter>SELECT IPObject WHERE finalclass IN ('IPv4Address', 'IPv4Range', 'IPv4Subnet')</filter>
+					<filter>SELECT IPObject WHERE finalclass IN ('IPv4Address', 'IPv4Range', 'IPv4Subnet') AND org_id = :this->org_id</filter>
 					<sql>ip_id</sql>
 					<is_null_allowed>true</is_null_allowed>
 					<target_class>IPObject</target_class>
 					<on_target_delete>DEL_MANUAL</on_target_delete>
+					<dependencies>
+						<attribute id="org_id"/>
+					</dependencies>
 				</field>
 				<field id="ip_name"
 					xsi:type="AttributeExternalField"
@@ -62,7 +74,7 @@
 								console.log(ip);
 								$("[name=attr_jira]").val("http://a.com/" + ip);
 							}
-							$("[name=attr_ip_id]").bind("change", AutoSetIpId);
+							$("#field_2_ip_id").delegate("[name=attr_ip_id]", "change", AutoSetIpId);
 							');
 							parent::DisplayModifyForm($oPage, $aExtraParams);
 						}
@@ -73,9 +85,13 @@
 			<presentation>
 				<default_search _delta="must_exist">
 					<items>
-						<item id="ip_id"
+						<item id="org_id"
 							_delta="define">
 							<rank>20</rank>
+						</item>
+						<item id="ip_id"
+							_delta="define">
+							<rank>25</rank>
 						</item>
 						<item id="jira">
 							<rank>30</rank>
@@ -84,6 +100,10 @@
 				</default_search>
 				<details>
 					<items>
+						<item id="org_id"
+							_delta="define">
+							<rank>5</rank>
+						</item>
 						<item id="ip_id">
 							<rank>10</rank>
 						</item>
