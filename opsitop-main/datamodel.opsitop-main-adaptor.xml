@@ -2,6 +2,19 @@
 <itop_design xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	version="1.0">
 	<classes>
+		<class id="FunctionalCI">
+			<properties>
+				<uniqueness_rules>
+					<rule id="functionalci_name" _delta="define">
+					<!-- field or combination of "FunctionalCI" fields which must be unique -->
+						<attributes>
+						  <attribute id="name"/>
+						  <attribute id="finalclass"/>
+						</attributes>
+					</rule>
+				</uniqueness_rules>
+			</properties>
+		</class>
 		<class id="OpsLearn"
 			_delta="define">
 			<parent>cmdbAbstractObject</parent>
