@@ -2,6 +2,104 @@
 <itop_design xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	version="1.0">
 	<classes>
+		<class id="lnkContactToFunctionalCI">
+			<fields>
+				<field id="test" xsi:type="AttributeCustomFields" _delta="define">
+					<handler_class>TestHandler</handler_class>
+				</field>
+				<field id="status" xsi:type="AttributeEnum" _delta="define">
+					<sql>status</sql>
+					<values>
+						<value id="production">production</value>
+					</values>
+					<default_value>production</default_value>
+					<is_null_allowed>false</is_null_allowed>
+				</field>
+			</fields>
+			<!--
+			<lifecycle _delta="define">
+				<attribute>status</attribute>
+				<stimuli>
+					<stimulus id="ev_test" xsi:type="StimulusInternal"/>
+				</stimuli>
+				<states>
+					<state id="production">
+						<flags>
+							<attribute id="test">
+								<read_only/>
+							</attribute>
+						</flags>
+						<transitions>
+							<transition id="production">
+								<stimulus>ev_test</stimulus>
+								<target>production</target>
+								<actions></actions>
+							</transition>
+						</transitions>
+					</state>
+				</states>
+			</lifecycle>
+			-->
+			<methods>
+				<method id="GetInitialStateAttributeFlags" _delta="define">
+					<static>false</static>
+					<access>public</access>
+					<type>Overload-iDisplay</type>
+					<code><![CDATA[
+					public function GetInitialStateAttributeFlags($sAttCode, &$aReasons = array())
+					{
+						// doc 链接自动生成
+						if($sAttCode == "test") {
+							return OPT_ATT_READONLY;
+						} else {
+							return parent::GetInitialStateAttributeFlags($sAttCode, $aReasons);
+						}
+					}
+					]]>
+					</code>
+				</method>
+				<method id="GetAttributeFlags" _delta="define">
+					<static>false</static>
+					<access>public</access>
+					<type>Overload-iDisplay</type>
+					<code><![CDATA[
+					// 不允许修改组成friendlyname的属性
+					public function GetAttributeFlags($sAttCode, &$aReasons = array(), $sTargetState = '')
+					{
+						// doc 链接自动生成
+						if($sAttCode == "test") {
+							return OPT_ATT_READONLY;
+						}
+						return parent::GetAttributeFlags($sAttCode, $aReasons, $sTargetState);
+					}
+					]]>
+					</code>
+				</method>
+			</methods>
+			<presentation>
+				<details>
+					<items>
+						<item id="test">
+							<rank>10</rank>
+						</item>
+					</items>
+				</details>
+				<default_search>
+					<items>
+						<item id="test">
+							<rank>10</rank>
+						</item>
+					</items>
+				</default_search>
+				<list>
+					<items>
+						<item id="test">
+							<rank>10</rank>
+						</item>
+					</items>
+				</list>
+			</presentation>
+		</class>
 		<class id="PhysicalDevice">
 			<fields>
 				<field id="brand_id" xsi:type="AttributeExternalKey"  _delta="redefine">
