@@ -276,6 +276,53 @@
 				</details>
 			</presentation>
 		</class>
+		<class id="NetworkDeviceType">
+			<fields>
+				<field id="icon" xsi:type="AttributeImage" _delta="define">
+					<default_image>../itop-config-mgmt/images/switch.png</default_image>
+					<is_null_allowed>true</is_null_allowed>
+					<tracking_level>none</tracking_level>
+				</field>
+			</fields>
+			<presentation>
+				<details>
+					<items>
+						<item id="icon" _delta="define">
+							<rank>20</rank>
+						</item>
+					</items>
+				</details>
+			</presentation>
+		</class>
+		<class id="NetworkDevice">
+			<methods>
+				<method id="GetIcon" _delta="define">
+					<static>false</static>
+					<access>public</access>
+					<type>Overload-DBObject</type>
+					<code><![CDATA[
+                        public function GetIcon($bImgTag = true)
+                        {
+                            $aDefaultConf = array("Router" => "images/router.png", "Switch" => "images/switch.png");
+                            $aConf = MetaModel::GetModuleSetting("opsitop-main","networkdevice_icon", $aDefaultConf);
+                            $sDeviceType = $this->Get("networkdevicetype_name");
+                            if(array_key_exists($sDeviceType, $aConf)) {
+                                $sEnv = MetaModel::GetEnvironment();
+                                $sIcon = '../env-' . $sEnv . '/opsitop-main/' . $aConf[$sDeviceType];
+                                if($bImgTag) {
+                                    return '<img src="' . $sIcon . '">';
+                                } else {
+                                    return $sIcon;
+                                }
+                            } else {
+                                return parent::GetIcon($bImgTag);
+                            }
+                        }
+					]]>
+					</code>
+				</method>
+			</methods>
+		</class>
 	</classes>
 	<menus>
 		<menu id="OpsLearn"
