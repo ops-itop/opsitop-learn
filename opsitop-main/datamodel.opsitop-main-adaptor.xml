@@ -4,9 +4,9 @@
 	<classes>
 		<class id="lnkContactToFunctionalCI">
 			<fields>
-				<field id="test" xsi:type="AttributeCustomFields" _delta="define">
+				<!-- <field id="test" xsi:type="AttributeCustomFields" _delta="define">
 					<handler_class>TestHandler</handler_class>
-				</field>
+				</field> -->
 				<field id="status" xsi:type="AttributeEnum" _delta="define">
 					<sql>status</sql>
 					<values>
@@ -40,7 +40,7 @@
 				</states>
 			</lifecycle>
 			-->
-			<methods>
+			<!-- <methods>
 				<method id="GetInitialStateAttributeFlags" _delta="define">
 					<static>false</static>
 					<access>public</access>
@@ -98,7 +98,7 @@
 						</item>
 					</items>
 				</list>
-			</presentation>
+			</presentation> -->
 		</class>
 		<class id="PhysicalDevice">
 			<fields>
@@ -323,6 +323,103 @@
 				</method>
 			</methods>
 		</class>
+		<class id="BusinessProcess">
+			<fields>
+				<field id="applicationsolutions_list" xsi:type="AttributeLinkedSet" _delta="redefine">
+					<linked_class>ApplicationSolution</linked_class>
+					<ext_key_to_me>businessprocess_id</ext_key_to_me>
+				</field>
+				<field id="code" xsi:type="AttributeString" _delta="define">
+					<sql>code</sql>
+					<is_null_allowed>true</is_null_allowed>
+				</field>
+			</fields>
+			<presentation>
+				<details>
+					<items>
+						<item id="contacts_list" _delta="redefine">
+							<rank>80</rank>
+						</item>
+						<item id="documents_list" _delta="redefine">
+							<rank>100</rank>
+						</item>
+						<item id="applicationsolutions_list" _delta="redefine">
+							<rank>70</rank>
+						</item>					
+					</items>
+				</details>
+			</presentation>
+		</class>
+		<class id="ApplicationSolution">
+			<fields>
+				<field id="code" xsi:type="AttributeString" _delta="define">
+					<sql>code</sql>
+					<is_null_allowed>true</is_null_allowed>
+				</field>
+				<field id="businessprocess_id" xsi:type="AttributeExternalKey" _delta="define">
+					<sql>businessprocess_id</sql>
+					<target_class>BusinessProcess</target_class>
+					<is_null_allowed>false</is_null_allowed>
+					<on_target_delete>DEL_MANUAL</on_target_delete>
+				</field>
+				<field id="businessprocess_name" xsi:type="AttributeExternalField" _delta="define">
+					<extkey_attcode>businessprocess_id</extkey_attcode>
+					<target_attcode>name</target_attcode>
+				</field>
+				<field id="status" xsi:type="AttributeEnum" _delta="redefine">
+					<values>
+						<value id="production">production</value>
+						<value id="implementation">implementation</value>
+						<value id="stock">stock</value>
+						<value id="obsolete">obsolete</value>
+					</values>
+					<sql>status</sql>
+					<default_value>production</default_value>
+					<is_null_allowed>true</is_null_allowed>
+					<display_style>list</display_style>					
+				</field>			
+			</fields>
+			<presentation>
+				<default_search>
+					<items>
+						<item id="businessprocess_id">
+							<rank>5</rank>
+						</item>
+					</items>
+				</default_search>
+				<details>
+					<items>				
+						<item id="businessprocess_id" _delta="define">
+							<rank>16</rank>
+						</item>
+					</items>
+				</details>
+				<search>
+					<items>			
+						<item id="businessprocess_id" _delta="define">
+							<rank>16</rank>
+						</item>
+					</items>
+
+				</search>
+				<list>
+					<items>
+						<item id="businessprocess_id" _delta="define">
+							<rank>6</rank>
+						</item>
+					</items>
+				</list>
+			</presentation>
+			<relations>
+				<relation id="impacts">
+					<neighbours>
+						<neighbour id="businessprocess" _delta="redefine">
+							<attribute>businessprocess_id</attribute>
+						</neighbour>
+					</neighbours>
+				</relation>
+			</relations>
+		</class>		
 	</classes>
 	<menus>
 		<menu id="OpsLearn"
@@ -332,6 +429,11 @@
 			<parent>SearchCIs</parent>
 			<oql>SELECT OpsLearn</oql>
 			<do_search>1</do_search>
+		</menu>
+		<menu id="AppTree" xsi:type="WebPageMenuNode" _delta="define">
+			<rank>21</rank>
+			<parent>WelcomeMenu</parent>
+			<url>$pages/exec.php?exec_module=opsitop-main&amp;exec_page=ui.php</url>
 		</menu>
 	</menus>
 	<snippets>
